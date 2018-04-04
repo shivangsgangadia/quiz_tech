@@ -1,0 +1,12 @@
+Requirements to compile:
+Library: Poco for c++
+Library: libgtk-3-dev 
+Compiler: G++ with Standard c++ 11
+Compile command: $ g++ -Wall -std=c++11 `pkg-config --cflags gtk+-3.0` gui_client.cpp `pkg-config --libs gtk+-3.0` -L/usr/local/include/Poco  -lPocoNet -lPocoFoundation
+
+For login:
+-Currently added teams: "team3", "team4"
+-Ip: 127.0.0.1
+*Port will be added automatically
+
+Warning: Do not delete or move the .glade files. They are loaded at runtime for GUI.
