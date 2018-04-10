@@ -44,6 +44,11 @@ def set_attempts_left(tid,n,a):									#Add a to current attempts of given ques
 		cur.execute(query)
 	dbobj.commit()
 	
+def set_current_ques_no(tid,n):
+	query = "UPDATE teams SET current_ques_no="+str(n)+" WHERE team_id="+str('"'+tid+'"')+";"
+	cur.execute(query)
+	dbobj.commit()
+	
 def update_points(tid, points, i):
 	curr_points = get_from_teams("points",tid)
 	#curr_points = get_points(tid)
@@ -134,6 +139,7 @@ def process_request(req):
 			n = int(get_from_teams("current_ques_no", str(req_array[2])))		#Get the current question number
 		else:
 			n = int(req_array[1])
+			set_current_ques_no(str(req_array[2]), n)
 		ques_title = get_from_questions("title",n)		
 		ques_text = get_question_text(n)
 		ques_diff = get_from_questions("difficulty", n)
@@ -149,7 +155,7 @@ def process_request(req):
 		if(get_attempts_left(tid, q_no)=='0'):				#If attempts are over or question is already answered
 			response = "x"
 			
-		elif(sub_ans==exp_ans):								#Answer is correct
+		elif((sub_ans==exp_ans) and get_attempts_left(tid, q_no)!='0'):								#Answer is correct
 			get_points = int(get_from_questions("points", q_no))
 			update_points(tid, get_points, 1)
 			curr_attempts = int(get_attempts_left(tid, q_no))
